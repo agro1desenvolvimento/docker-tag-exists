@@ -27,12 +27,5 @@ runs:
       id: check_image_tag
       run: |
         set -e
-        image_tag="${{ inputs.name-and-tag }}"
-        echo "Checking if image/tag exists: $image_tag"
-        if docker manifest inspect $image_tag > /dev/null 2>&1; then
-          echo "Image/tag exists: $image_tag"
-          echo "::set-output name=exists::true"
-        else
-          echo "Image/tag does not exist: $image_tag"
-          echo "::set-output name=exists::false"
-        fi
+        echo "Checking if image/tag exists: ${{ inputs.name-and-tag }}"
+        docker manifest inspect ${{ inputs.name-and-tag }}
