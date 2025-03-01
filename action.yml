@@ -1,0 +1,38 @@
+name: 'Docker Image/Tag Exists'
+description: 'Check if a Docker image/tag exists in Docker Hub'
+inputs:
+  name-and-tag:
+    description: 'Docker image name with tag'
+    required: true
+    default: 'abc'
+  dockerhub-username:
+    description: 'Dockerhub username'
+    required: true
+    default: 'no-dockerhub-username'
+  dockerhub-password:
+    description: 'dockerhub password'
+    required: true
+    default: 'no-dockerhub-password'
+runs:
+  using: "composite"
+  steps:
+    - name: Login to DockerHub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ inputs.dockerhub-username }}
+        password: ${{ inputs.dockerhub-password }}
+
+    - name: Check if Docker image/tag exists
+      shell: bash
+      id: check_image_tag
+      run: |
+        set -e
+        image_tag="${{ inputs.name-and-tag }}"
+        echo "Checking if image/tag exists: $image_tag"
+        if docker manifest inspect $image_tag > /dev/null 2>&1; then
+          echo "Image/tag exists: $image_tag"
+          echo "::set-output name=exists::true"
+        else
+          echo "Image/tag does not exist: $image_tag"
+          echo "::set-output name=exists::false"
+        fi
