@@ -2,17 +2,15 @@ name: 'Docker Image/Tag Exists'
 description: 'Check if a Docker image/tag exists in Docker Hub'
 inputs:
   name-and-tag:
-    description: 'Docker image name with tag'
+    description: 'Docker image name with tag (e.g., username/image:tag)'
     required: true
-    default: 'abc'
   dockerhub-username:
-    description: 'Dockerhub username'
+    description: 'DockerHub username for authentication'
     required: true
-    default: 'no-dockerhub-username'
   dockerhub-password:
-    description: 'dockerhub password'
+    description: 'DockerHub password or access token'
     required: true
-    default: 'no-dockerhub-password'
+    
 runs:
   using: "composite"
   steps:
